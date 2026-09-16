@@ -86,7 +86,8 @@ export const task = defineTask(async ({ participant, step, measure, log }) => {
 | `participants` | Array of participants with `name`, `requiredEnvVars`, and any custom fields the task needs. |
 | `defaultProviders` | Participant names to run when `--provider` is omitted. Omit to run all env-available participants. |
 | `dimensions` | Static run-level metadata copied into the run config, e.g. `{ fileSize: '10MB' }`. |
-| `scoring` | Serializable scoring spec: metrics, weights, `higherIsBetter`, `floor`, `success.requireData`. |
+| `scoring` | Serializable scoring spec: metrics, weights, `higherIsBetter`, `floor`, `success.requireData`, and `groupBy` for dimension breakouts. |
+| `display` | Optional display manifest: labels, units, ordering, and overview defaults the platform uses when rendering the run. See [Display & platform rendering](#display--platform-rendering). |
 | `onScore` | Optional run-level hook that returns a `ScoringSpec` using `lowerIsBetter` / `higherIsBetter` helpers. Use when you need function-based value extraction. |
 | `onComplete` | Optional run-level hook for aggregate output, e.g. writing legacy JSON. Receives `BenchmarkRunOutcome`. |
 | `customCliFlags` | Extra CLI flags the benchmark file reads itself, e.g. `['--file-size']`. Prevents the runner from rejecting them as unknown. |
@@ -307,17 +308,75 @@ Rules:
 - `weights.median + weights.p95 + weights.p99` across **all metrics** must sum to `1.0` (within 0.01).
 - `ceiling` is the worst acceptable value; the score is `100 * (1 - value/ceiling)` for `lowerIsBetter`.
 - `higherIsBetter` flips the formula and uses `floor` as the minimum score threshold.
+- `trim` (optional, per metric, default `0.05`) — the fraction trimmed off each end of the metric's sorted samples before computing median/p95/p99, to dampen outlier effects like cold starts and network blips. `trim: 0.05` drops the bottom and top 5%; set `trim: 0` to score on the raw distribution. The platform re-derives the same trimmed stats when it renders the run, so the displayed composite matches what the runner computed.
 - `success.requireData` makes a record count as successful only when every listed data field matches the given value. Records that fail or do not match lower the success rate.
 
-If you need to extract metric values with a function, use `onScore` instead:
+### `scoring` vs `onScore`
+
+`scoring` and `onScore` are two ways to produce the same `ScoringSpec` — declare **one**, not both (if both are set, `onScore` wins):
+
+- Prefer `scoring`. It's a plain serializable object: the runner validates it at startup (weights sum, shape, unit conflicts with `display.metrics`), and the platform stores the spec and recomputes the same composite when rendering the run.
+- Use `onScore` only when a metric's value can't be named by a key — i.e. extracting a custom metric out of the task record with a function. The hook receives `lowerIsBetter` / `higherIsBetter` helpers and may be async.
 
 ```ts
+// Score on a custom metric the task reports via measure() — here `ttiMs`
+// lives on each record's `data`, not under a fixed metric key.
 onScore: (lowerIsBetter) => ({
   metrics: [
-    lowerIsBetter('ttiMs', { unit: 'ms', ceiling: 10000, weights: { median: 0.6, p95: 0.25, p99: 0.15 }, value: (record) => record.data?.ttiMs as number }),
+    lowerIsBetter('ttiMs', {
+      unit: 'ms',
+      ceiling: 10000,
+      weights: { median: 0.6, p95: 0.25, p99: 0.15 },
+      value: (record) => record.data?.ttiMs as number,
+    }),
   ],
 }),
 ```
+
+Both paths enforce the weight-sum rule — but `onScore` specs are only validated when scoring runs, so a bad spec surfaces as a run error rather than a startup failure.
+
+## Display & platform rendering
+
+`config.display` is a manifest the platform reads at render time — a `*.bench.ts` file owns not only how the benchmark runs, but how it should be rendered, without a platform code change.
+
+```ts
+display: {
+  metrics: [
+    { key: 'uploadMs', label: 'Upload', unit: 'ms', direction: 'lower-better', decimals: 0 },
+    { key: 'throughputMbps', label: 'Throughput', unit: 'Mbps', direction: 'higher-better', decimals: 1 },
+  ],
+  steps: [
+    { key: 'upload', label: 'Upload', order: 0 },
+    { key: 'download', label: 'Download', order: 1 },
+    { key: 'delete', label: 'Delete', order: 2 },
+  ],
+  overview: { defaultMetric: 'compositeScore', defaultLayout: 'ranking' },
+},
+```
+
+| Field | Controls |
+|-------|----------|
+| `display.metrics` | Labels, units, decimals, ranking direction, and ordering for keys passed to `measure()`. `direction` decides which way the Overview "rank by metric" dropdown sorts. |
+| `display.steps` | Labels and ordering for step names passed to `step()`. `key` must match the string given to `step()`. |
+| `display.overview` | Overview-page defaults: `defaultMetric` (what participants rank by) and `defaultLayout` (`ranking` / `cards` / `chart` / `leaderboard`). |
+
+Everything is optional and falls back gracefully: an undeclared step renders title-cased in first-seen order, and an undeclared metric renders with a generic number format and `higher-better` direction — a new `measure()` key shows up in the UI with no config at all; declaring it only improves its presentation. Well-known keys (`uploadMs`, `throughputMbps`, `compositeScore`, ...) have built-in platform defaults the manifest can refine.
+
+### Phases in the UI
+
+The run page's chart and iteration-table dropdowns offer an "Overall task" entry plus one entry per `step()` name — the platform calls these **phases**. They are pure display slices over the run's stored step rows, not something you configure: pick a phase and the chart shows just that slice's data. `display.steps` controls their labels and order, so the dropdown, the "By Step" table columns, and the latency scatter all agree. (Not to be confused with `config.phases`, which splits a run's iterations into named segments like cold/warm.)
+
+Metrics measured inside a `step()` attach to that step — they appear in the "By Iteration" dropdown's metric options and aggregate under the step that reported them.
+
+### `scoring.groupBy` — dimension breakouts
+
+`scoring.groupBy` names a key on each task record's `data` that the run varies internally — the storage benchmark tags every record with `file_size` and sets `groupBy: 'file_size'`. The platform renders one series per value: charts label them `AWS S3 · 16MB`, each chart gets a group selector, and tables show one row per (participant, group).
+
+Rules:
+
+- The breakout only renders when the run produced **2–12** distinct values — one value means no real variation, more than twelve is unreadable, so the run is served blended.
+- `scoring.groupBy` is unrelated to the top-level `groupBy` (execution interleaving, `'participant'` / `'round'`) despite the same name.
+- A run that would produce only one value should drop `scoring.groupBy` but keep tagging records — otherwise the group row duplicates the run-wide aggregate. See `benchmarks/storage/storage.bench.ts` (`singleSizeConfig` vs `multiSizeConfig`) for the pattern.
 
 ## Error handling
 
