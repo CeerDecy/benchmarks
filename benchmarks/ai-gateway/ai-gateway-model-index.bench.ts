@@ -32,22 +32,6 @@ function gatherResults(outcome: BenchmarkRunOutcome): AIGatewayModelIndexProvide
     .map((d) => d as unknown as AIGatewayModelIndexProviderResult);
 }
 
-function participantNames(outcome: BenchmarkRunOutcome): string[] {
-  return outcome.participants.map((p) => p.participant);
-}
-
-function isFullRun(outcome: BenchmarkRunOutcome): boolean {
-  const actual = new Set(participantNames(outcome));
-  const all = new Set(modelIndexProviders.map((p) => p.name));
-  return actual.size === all.size && [...actual].every((name) => all.has(name));
-}
-
-function resultSuffix(outcome: BenchmarkRunOutcome): string {
-  if (isFullRun(outcome)) return '';
-  const names = [...new Set(participantNames(outcome))].sort();
-  return names.length ? `-${names.join('+')}` : '-empty';
-}
-
 function writeModelIndexResults(outcome: BenchmarkRunOutcome, resultsDir: string): void {
   const results = gatherResults(outcome);
   fs.mkdirSync(resultsDir, { recursive: true });
@@ -65,7 +49,9 @@ function writeModelIndexResults(outcome: BenchmarkRunOutcome, resultsDir: string
   };
 
   const date = timestamp.slice(0, 10);
-  const suffix = resultSuffix(outcome);
+  // Explicit `--provider` selections get their own files so a targeted rerun
+  // can't clobber the canonical full-roster results.
+  const suffix = outcome.config.providers?.length ? `-${outcome.config.providers.join('+')}` : '';
   const datedPath = path.join(resultsDir, `${date}${suffix}.json`);
   const latestPath = path.join(resultsDir, `latest${suffix}.json`);
 
