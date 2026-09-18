@@ -137,10 +137,10 @@
     "generate-ai-gateway-kimi-svg": "tsx benchmarks/ai-gateway/generate-svg.ts --dir ai-gateway-latency/kimi --title \"AI Gateway Benchmarks — Kimi\" --out ai-gateway-kimi.svg"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1130.0",
-    "@aws-sdk/lib-storage": "^3.1130.0",
-    "@aws-sdk/s3-presigned-post": "^3.1130.0",
-    "@aws-sdk/s3-request-presigner": "^3.1130.0",
+    "@aws-sdk/client-s3": "^3.1135.0",
+    "@aws-sdk/lib-storage": "^3.1135.0",
+    "@aws-sdk/s3-presigned-post": "^3.1135.0",
+    "@aws-sdk/s3-request-presigner": "^3.1135.0",
     "@azure/storage-blob": "^12.33.0",
     "@benchsdk/api": "workspace:*",
     "@benchsdk/client": "workspace:*",
@@ -201,7 +201,7 @@
     "@vercel/blob": "^2.8.0",
     "computesdk": "^4.1.5",
     "dotenv": "^17.4.2",
-    "e2b": "^2.49.1",
+    "e2b": "^2.50.0",
     "p-limit": "^7.3.2",
     "pg": "^8.23.0",
     "playwright-core": "^1.63.0",
