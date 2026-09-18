@@ -1589,8 +1589,8 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
-  '@lightningai/sdk@2026.9.15':
-    resolution: {integrity: sha512-0yTo9vi1ZW9J8nVdkXRcTmLiYiQmqOhM0aeeNyetU5O8iUWpFlGHAt0jSrw8r9TogLc8l2Cae+WeVaNlEVwXEQ==}
+  '@lightningai/sdk@2026.9.18':
+    resolution: {integrity: sha512-nLPQHPl5U9NlSRkD+SaX+0B2Pzhaqi4nIpwJk668PI+S+OIvXzZj93isece0Bpks9OrihkFV8cz/jG1Yy6mOhQ==}
     engines: {node: '>=22.0.0'}
 
   '@lukeed/ms@2.0.2':
@@ -6522,7 +6522,7 @@ snapshots:
   '@computesdk/lightning@1.0.4':
     dependencies:
       '@computesdk/provider': 2.1.6
-      '@lightningai/sdk': 2026.9.15
+      '@lightningai/sdk': 2026.9.18
       computesdk: 4.1.5
     transitivePeerDependencies:
       - debug
@@ -7240,7 +7240,7 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@lightningai/sdk@2026.9.15':
+  '@lightningai/sdk@2026.9.18':
     dependencies:
       axios: 1.20.0
     transitivePeerDependencies:
