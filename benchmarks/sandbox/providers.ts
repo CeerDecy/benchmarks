@@ -211,7 +211,7 @@ export const providers: ProviderConfig[] = [
     // benchmarks/scripts/build-novita-template.ts). It includes Node.js because
     // TTI runs `node -v` as its first command.
     sandboxOptions: {
-      templateId: process.env.NOVITA_TEMPLATE_ID || 'base-8cpu-16gb',
+      templateId: process.env.NOVITA_TEMPLATE_ID || 'base-8c-16g',
     },
   },
   {

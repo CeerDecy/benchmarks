@@ -22,12 +22,12 @@ async function main() {
 
   // Rebuild the alias; an existing template does not prove Node is available.
   // Let build errors propagate so we cannot silently reuse an unsuitable image.
-  await novita.template.build(template, 'base-8cpu-16gb', {
+  await novita.template.build(template, 'base-8c-16g', {
     cpuCount: 8,
     memoryMB: 16384,
     onBuildLogs: defaultBuildLogger(),
   });
-  console.log('Novita template base-8cpu-16gb built successfully (node -v verified)');
+  console.log('Novita template base-8c-16g built successfully (node -v verified)');
 }
 
 main().catch((error) => {
