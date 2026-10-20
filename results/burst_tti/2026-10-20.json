@@ -1,0 +1,63 @@
+{
+  "version": "1.1",
+  "timestamp": "2026-10-20T19:03:30.422Z",
+  "environment": {
+    "node": "v24.22.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "config": {
+    "iterations": 10,
+    "timeoutMs": 120000
+  },
+  "results": [
+    {
+      "provider": "promigence",
+      "mode": "concurrent",
+      "concurrency": 10,
+      "wallClockMs": 245.35,
+      "timeToFirstReadyMs": 102.75,
+      "iterations": [
+        {
+          "ttiMs": 226.76
+        },
+        {
+          "ttiMs": 137.05
+        },
+        {
+          "ttiMs": 105.33
+        },
+        {
+          "ttiMs": 101.75
+        },
+        {
+          "ttiMs": 244.35
+        },
+        {
+          "ttiMs": 154.62
+        },
+        {
+          "ttiMs": 105.53
+        },
+        {
+          "ttiMs": 102.24
+        },
+        {
+          "ttiMs": 146.04
+        },
+        {
+          "ttiMs": 165.76
+        }
+      ],
+      "summary": {
+        "ttiMs": {
+          "median": 141.54,
+          "p95": 244.35,
+          "p99": 244.35
+        }
+      },
+      "compositeScore": 98.17,
+      "successRate": 1
+    }
+  ]
+}
