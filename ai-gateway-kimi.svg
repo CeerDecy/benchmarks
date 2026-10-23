@@ -61,171 +61,171 @@
   <text class="rank rank-1" x="30" y="208">1</text>
   <text class="row provider" x="65" y="208">Github-copilot</text>
   <text class="row total" x="250" y="208">92.7</text>
-  <text class="row total fast" x="320" y="208">657ms</text>
-  <text class="row" x="430" y="208">27ms</text>
-  <text class="row" x="505" y="208">2ms</text>
-  <text class="row" x="580" y="208">10ms</text>
-  <text class="row" x="655" y="208">598ms</text>
-  <text class="row" x="760" y="208">548ms</text>
-  <text class="row" x="880" y="208">117.3</text>
+  <text class="row total fast" x="320" y="208">484ms</text>
+  <text class="row" x="430" y="208">1ms</text>
+  <text class="row" x="505" y="208">1ms</text>
+  <text class="row" x="580" y="208">9ms</text>
+  <text class="row" x="655" y="208">474ms</text>
+  <text class="row" x="760" y="208">454ms</text>
+  <text class="row" x="880" y="208">114.0</text>
   <text class="row status" x="1000" y="208">50/50</text>
   <line class="divider" x1="24" y1="222" x2="1096" y2="222"/>
 
   <!-- Row 2 -->
   <text class="rank rank-2" x="30" y="252">2</text>
   <text class="row provider" x="65" y="252">Neon AI Gateway</text>
-  <text class="row total" x="250" y="252">90.7</text>
-  <text class="row total fast" x="320" y="252">764ms</text>
-  <text class="row" x="430" y="252">15ms</text>
-  <text class="row" x="505" y="252">22ms</text>
-  <text class="row" x="580" y="252">46ms</text>
-  <text class="row" x="655" y="252">670ms</text>
-  <text class="row" x="760" y="252">545ms</text>
-  <text class="row" x="880" y="252">86.5</text>
+  <text class="row total" x="250" y="252">86.2</text>
+  <text class="row total fast" x="320" y="252">792ms</text>
+  <text class="row" x="430" y="252">1ms</text>
+  <text class="row" x="505" y="252">13ms</text>
+  <text class="row" x="580" y="252">29ms</text>
+  <text class="row" x="655" y="252">742ms</text>
+  <text class="row" x="760" y="252">766ms</text>
+  <text class="row" x="880" y="252">87.5</text>
   <text class="row status" x="1000" y="252">50/50</text>
   <line class="divider" x1="24" y1="266" x2="1096" y2="266"/>
 
   <!-- Row 3 -->
   <text class="rank rank-3" x="30" y="296">3</text>
-  <text class="row provider" x="65" y="296">Blazerail</text>
-  <text class="row total" x="250" y="296">85.0</text>
-  <text class="row total medium" x="320" y="296">1222ms</text>
-  <text class="row" x="430" y="296">16ms</text>
-  <text class="row" x="505" y="296">2ms</text>
-  <text class="row" x="580" y="296">3ms</text>
-  <text class="row" x="655" y="296">1193ms</text>
-  <text class="row" x="760" y="296">864ms</text>
-  <text class="row" x="880" y="296">51.5</text>
-  <text class="row status" x="1000" y="296">49/50</text>
+  <text class="row provider" x="65" y="296">ngrok AI Gateway</text>
+  <text class="row total" x="250" y="296">83.4</text>
+  <text class="row total medium" x="320" y="296">1719ms</text>
+  <text class="row" x="430" y="296">1ms</text>
+  <text class="row" x="505" y="296">13ms</text>
+  <text class="row" x="580" y="296">15ms</text>
+  <text class="row" x="655" y="296">1658ms</text>
+  <text class="row" x="760" y="296">1479ms</text>
+  <text class="row" x="880" y="296">38.8</text>
+  <text class="row status" x="1000" y="296">50/50</text>
   <line class="divider" x1="24" y1="310" x2="1096" y2="310"/>
 
   <!-- Row 4 -->
   <text class="rank" x="30" y="340">4</text>
-  <text class="row provider" x="65" y="340">ngrok AI Gateway</text>
-  <text class="row total" x="250" y="340">81.4</text>
-  <text class="row total slow" x="320" y="340">2162ms</text>
-  <text class="row" x="430" y="340">24ms</text>
-  <text class="row" x="505" y="340">18ms</text>
-  <text class="row" x="580" y="340">17ms</text>
-  <text class="row" x="655" y="340">2090ms</text>
-  <text class="row" x="760" y="340">2132ms</text>
-  <text class="row" x="880" y="340">35.2</text>
+  <text class="row provider" x="65" y="340">LLM API</text>
+  <text class="row total" x="250" y="340">83.4</text>
+  <text class="row total medium" x="320" y="340">1730ms</text>
+  <text class="row" x="430" y="340">1ms</text>
+  <text class="row" x="505" y="340">87ms</text>
+  <text class="row" x="580" y="340">88ms</text>
+  <text class="row" x="655" y="340">1554ms</text>
+  <text class="row" x="760" y="340">1505ms</text>
+  <text class="row" x="880" y="340">39.1</text>
   <text class="row status" x="1000" y="340">50/50</text>
   <line class="divider" x1="24" y1="354" x2="1096" y2="354"/>
 
   <!-- Row 5 -->
   <text class="rank" x="30" y="384">5</text>
-  <text class="row provider" x="65" y="384">Kimi (direct)</text>
-  <text class="row total" x="250" y="384">80.4</text>
-  <text class="row total slow" x="320" y="384">2154ms</text>
-  <text class="row" x="430" y="384">46ms</text>
+  <text class="row provider" x="65" y="384">LLM Gateway</text>
+  <text class="row total" x="250" y="384">83.0</text>
+  <text class="row total medium" x="320" y="384">1763ms</text>
+  <text class="row" x="430" y="384">1ms</text>
   <text class="row" x="505" y="384">2ms</text>
-  <text class="row" x="580" y="384">8ms</text>
-  <text class="row" x="655" y="384">2091ms</text>
-  <text class="row" x="760" y="384">2211ms</text>
-  <text class="row" x="880" y="384">34.8</text>
+  <text class="row" x="580" y="384">7ms</text>
+  <text class="row" x="655" y="384">1750ms</text>
+  <text class="row" x="760" y="384">1649ms</text>
+  <text class="row" x="880" y="384">38.8</text>
   <text class="row status" x="1000" y="384">50/50</text>
   <line class="divider" x1="24" y1="398" x2="1096" y2="398"/>
 
   <!-- Row 6 -->
   <text class="rank" x="30" y="428">6</text>
-  <text class="row provider" x="65" y="428">LLM API</text>
-  <text class="row total" x="250" y="428">80.3</text>
-  <text class="row total slow" x="320" y="428">2348ms</text>
-  <text class="row" x="430" y="428">36ms</text>
-  <text class="row" x="505" y="428">86ms</text>
-  <text class="row" x="580" y="428">88ms</text>
-  <text class="row" x="655" y="428">2126ms</text>
-  <text class="row" x="760" y="428">2350ms</text>
-  <text class="row" x="880" y="428">34.6</text>
+  <text class="row provider" x="65" y="428">OpenRouter</text>
+  <text class="row total" x="250" y="428">82.8</text>
+  <text class="row total medium" x="320" y="428">1961ms</text>
+  <text class="row" x="430" y="428">2ms</text>
+  <text class="row" x="505" y="428">1ms</text>
+  <text class="row" x="580" y="428">6ms</text>
+  <text class="row" x="655" y="428">1953ms</text>
+  <text class="row" x="760" y="428">1529ms</text>
+  <text class="row" x="880" y="428">39.1</text>
   <text class="row status" x="1000" y="428">50/50</text>
   <line class="divider" x1="24" y1="442" x2="1096" y2="442"/>
 
   <!-- Row 7 -->
   <text class="rank" x="30" y="472">7</text>
-  <text class="row provider" x="65" y="472">Vercel AI Gateway</text>
-  <text class="row total" x="250" y="472">80.3</text>
-  <text class="row total slow" x="320" y="472">2261ms</text>
-  <text class="row" x="430" y="472">3ms</text>
+  <text class="row provider" x="65" y="472">Concentrate AI</text>
+  <text class="row total" x="250" y="472">82.7</text>
+  <text class="row total medium" x="320" y="472">1869ms</text>
+  <text class="row" x="430" y="472">1ms</text>
   <text class="row" x="505" y="472">1ms</text>
-  <text class="row" x="580" y="472">8ms</text>
-  <text class="row" x="655" y="472">2232ms</text>
-  <text class="row" x="760" y="472">2494ms</text>
-  <text class="row" x="880" y="472">35.2</text>
+  <text class="row" x="580" y="472">7ms</text>
+  <text class="row" x="655" y="472">1856ms</text>
+  <text class="row" x="760" y="472">1684ms</text>
+  <text class="row" x="880" y="472">38.8</text>
   <text class="row status" x="1000" y="472">50/50</text>
   <line class="divider" x1="24" y1="486" x2="1096" y2="486"/>
 
   <!-- Row 8 -->
   <text class="rank" x="30" y="516">8</text>
-  <text class="row provider" x="65" y="516">LLM Gateway</text>
-  <text class="row total" x="250" y="516">80.1</text>
-  <text class="row total slow" x="320" y="516">2346ms</text>
+  <text class="row provider" x="65" y="516">Vercel AI Gateway</text>
+  <text class="row total" x="250" y="516">82.0</text>
+  <text class="row total slow" x="320" y="516">2098ms</text>
   <text class="row" x="430" y="516">2ms</text>
-  <text class="row" x="505" y="516">2ms</text>
-  <text class="row" x="580" y="516">7ms</text>
-  <text class="row" x="655" y="516">2332ms</text>
-  <text class="row" x="760" y="516">2304ms</text>
-  <text class="row" x="880" y="516">35.6</text>
+  <text class="row" x="505" y="516">7ms</text>
+  <text class="row" x="580" y="516">18ms</text>
+  <text class="row" x="655" y="516">2069ms</text>
+  <text class="row" x="760" y="516">1692ms</text>
+  <text class="row" x="880" y="516">38.5</text>
   <text class="row status" x="1000" y="516">50/50</text>
   <line class="divider" x1="24" y1="530" x2="1096" y2="530"/>
 
   <!-- Row 9 -->
   <text class="rank" x="30" y="560">9</text>
   <text class="row provider" x="65" y="560">Cloudflare AI Gateway</text>
-  <text class="row total" x="250" y="560">79.3</text>
-  <text class="row total slow" x="320" y="560">2531ms</text>
+  <text class="row total" x="250" y="560">80.5</text>
+  <text class="row total medium" x="320" y="560">1980ms</text>
   <text class="row" x="430" y="560">2ms</text>
   <text class="row" x="505" y="560">1ms</text>
-  <text class="row" x="580" y="560">4ms</text>
-  <text class="row" x="655" y="560">2524ms</text>
-  <text class="row" x="760" y="560">2473ms</text>
-  <text class="row" x="880" y="560">34.7</text>
-  <text class="row status" x="1000" y="560">50/50</text>
+  <text class="row" x="580" y="560">5ms</text>
+  <text class="row" x="655" y="560">1972ms</text>
+  <text class="row" x="760" y="560">1667ms</text>
+  <text class="row" x="880" y="560">38.8</text>
+  <text class="row status" x="1000" y="560">49/50</text>
   <line class="divider" x1="24" y1="574" x2="1096" y2="574"/>
 
   <!-- Row 10 -->
   <text class="rank" x="30" y="604">10</text>
-  <text class="row provider" x="65" y="604">Concentrate AI</text>
-  <text class="row total" x="250" y="604">78.9</text>
-  <text class="row total slow" x="320" y="604">2423ms</text>
-  <text class="row" x="430" y="604">2ms</text>
+  <text class="row provider" x="65" y="604">Kimi (direct)</text>
+  <text class="row total" x="250" y="604">74.9</text>
+  <text class="row total medium" x="320" y="604">1963ms</text>
+  <text class="row" x="430" y="604">1ms</text>
   <text class="row" x="505" y="604">1ms</text>
-  <text class="row" x="580" y="604">8ms</text>
-  <text class="row" x="655" y="604">2407ms</text>
-  <text class="row" x="760" y="604">2584ms</text>
-  <text class="row" x="880" y="604">34.0</text>
-  <text class="row status" x="1000" y="604">50/50</text>
+  <text class="row" x="580" y="604">9ms</text>
+  <text class="row" x="655" y="604">1951ms</text>
+  <text class="row" x="760" y="604">1488ms</text>
+  <text class="row" x="880" y="604">38.8</text>
+  <text class="row status" x="1000" y="604">45/50</text>
   <line class="divider" x1="24" y1="618" x2="1096" y2="618"/>
 
   <!-- Row 11 -->
   <text class="rank" x="30" y="648">11</text>
-  <text class="row provider" x="65" y="648">OpenRouter</text>
-  <text class="row total" x="250" y="648">75.0</text>
-  <text class="row total slow" x="320" y="648">3389ms</text>
-  <text class="row" x="430" y="648">3ms</text>
-  <text class="row" x="505" y="648">1ms</text>
-  <text class="row" x="580" y="648">6ms</text>
-  <text class="row" x="655" y="648">3380ms</text>
-  <text class="row" x="760" y="648">3591ms</text>
-  <text class="row" x="880" y="648">32.7</text>
+  <text class="row provider" x="65" y="648">Novita</text>
+  <text class="row total" x="250" y="648">72.6</text>
+  <text class="row total slow" x="320" y="648">4017ms</text>
+  <text class="row" x="430" y="648">1ms</text>
+  <text class="row" x="505" y="648">78ms</text>
+  <text class="row" x="580" y="648">158ms</text>
+  <text class="row" x="655" y="648">3772ms</text>
+  <text class="row" x="760" y="648">3726ms</text>
+  <text class="row" x="880" y="648">16.6</text>
   <text class="row status" x="1000" y="648">50/50</text>
   <line class="divider" x1="24" y1="662" x2="1096" y2="662"/>
 
   <!-- Row 12 -->
   <text class="rank" x="30" y="692">12</text>
-  <text class="row provider" x="65" y="692">Novita</text>
-  <text class="row total" x="250" y="692">73.4</text>
-  <text class="row total slow" x="320" y="692">4103ms</text>
-  <text class="row" x="430" y="692">17ms</text>
-  <text class="row" x="505" y="692">77ms</text>
-  <text class="row" x="580" y="692">156ms</text>
-  <text class="row" x="655" y="692">3827ms</text>
-  <text class="row" x="760" y="692">3666ms</text>
-  <text class="row" x="880" y="692">35.0</text>
-  <text class="row status" x="1000" y="692">50/50</text>
+  <text class="row provider" x="65" y="692">Blazerail</text>
+  <text class="row total" x="250" y="692">0.0</text>
+  <text class="row total slow" x="320" y="692">--</text>
+  <text class="row" x="430" y="692">--</text>
+  <text class="row" x="505" y="692">--</text>
+  <text class="row" x="580" y="692">--</text>
+  <text class="row" x="655" y="692">--</text>
+  <text class="row" x="760" y="692">--</text>
+  <text class="row" x="880" y="692">--</text>
+  <text class="row status" x="1000" y="692">0/50</text>
 
   <!-- Timestamp -->
-  <text class="timestamp" x="1096" y="752" text-anchor="end">Last updated: Oct 16, 2026, 04:13 PM UTC</text>
+  <text class="timestamp" x="1096" y="752" text-anchor="end">Last updated: Oct 23, 2026, 09:37 AM UTC</text>
 
   <!-- Footnote -->
   <text class="timestamp" x="24" y="766">Cold E2E = DNS + TCP + TLS + TTFT (fresh connection). Warm TTFT = TTFT on a reused connection. All latency/throughput values are medians across iterations. Lower is better (higher for Tokens/sec).</text>
