@@ -11,6 +11,7 @@ import { createosSandbox } from '@computesdk/createos-sandbox';
 import { daytona } from '@computesdk/daytona';
 import { declaw } from '@computesdk/declaw';
 import { e2b } from '@computesdk/e2b';
+import { ec2Firecrab } from '@computesdk/ec2-firecrab';
 import { freestyle } from '@computesdk/freestyle';
 import { givemeanode } from '@computesdk/givemeanode';
 import { gravixlayer } from '@computesdk/gravixlayer';
@@ -130,6 +131,34 @@ export const providers: ProviderConfig[] = [
     requiredEnvVars: ['E2B_API_KEY'],
     createCompute: () => e2b({ apiKey: process.env.E2B_API_KEY! }),
     sandboxOptions: { templateId: 'base-8cpu-16gb', timeout: 600_000 },
+  },
+  {
+    // Self-hosted firecrab host(s) on EC2 — comma-separated SSH targets + key
+    // (one entry for a single host; a pool comes from host/pool-up.sh). The
+    // adapter self-opens per-host API tunnels, derives the exec jumphosts,
+    // and round-robins creates across hosts.
+    // destroy is ~30s graceful ACPI, hence the longer timeout.
+    name: 'ec2-firecrab',
+    requiredEnvVars: ['EC2_FIRECRAB_SSH_TARGETS', 'EC2_FIRECRAB_SSH_KEY', 'EC2_FIRECRAB_MICRO_NETWORK'],
+    createCompute: () => ec2Firecrab({
+      sshTargets: process.env.EC2_FIRECRAB_SSH_TARGETS!.split(',').map((s) => s.trim()).filter(Boolean),
+      sshTarget: process.env.EC2_FIRECRAB_SSH_TARGET,
+      sshIdentityPem: process.env.EC2_FIRECRAB_SSH_KEY!,
+      microNetwork: process.env.EC2_FIRECRAB_MICRO_NETWORK!,
+      template: process.env.EC2_FIRECRAB_TEMPLATE,
+      // Smallest viable guest for the burst TTI probe (just `node -v`):
+      // 128MiB is firecrab's floor but the act image idles ~119MiB, so
+      // 256MiB is the honest minimum; diskGb floor is 2 (API enforces).
+      // ~200 of these fit on one c8i.8xlarge.
+      cpus: 1,
+      memoryMib: 256,
+      diskGb: 2,
+      egressPolicy: 'internet',
+    }),
+    destroyTimeoutMs: 90_000,
+    // Dispatch-only: the host pool is spun up per manual run, so scheduled
+    // matrices derived from this list (benchmarks-daily) must skip it.
+    manualOnly: true,
   },
   {
     name: 'freestyle',

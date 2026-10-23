@@ -37,6 +37,10 @@ on:
         required: false
         default: false
         type: boolean
+      host_count:
+        description: 'ec2-firecrab only: launch N fresh hosts via pool-up.sh for this run (0 = use the standing EC2_FIRECRAB_SSH_TARGETS from vault)'
+        required: false
+        default: '0'
       trigger_source:
         description: 'Recorded on platform runs as their trigger (e.g. platform-retrigger); leave empty for a plain manual run'
         required: false
@@ -76,7 +80,12 @@ jobs:
       # A single-provider dispatch still starts every matrix job; the ones that
       # don't match skip all their steps, including setup (whose cache-save post
       # step otherwise fails the job because nothing was installed).
-      SHOULD_RUN: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.provider == '' || github.event.inputs.provider == matrix.provider }}
+      # ec2-firecrab is dispatch-only and only when named: its host pool is
+      # spun up per manual run, so it never runs on push/schedule, and a
+      # blank-provider "all" dispatch skips it too.
+      SHOULD_RUN: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.provider == matrix.provider) || (matrix.provider != 'ec2-firecrab' && (github.event_name != 'workflow_dispatch' || github.event.inputs.provider == '')) }}
+      # Launch a fresh host pool for this run when dispatch asks for one.
+      FIRECRAB_POOL: ${{ github.event_name == 'workflow_dispatch' && matrix.provider == 'ec2-firecrab' && github.event.inputs.host_count != '0' }}
     strategy:
       fail-fast: false
       matrix:
@@ -94,6 +103,7 @@ jobs:
           - daytona
           - declaw
           - e2b
+          - ec2-firecrab  # manual dispatch only (gated in SHOULD_RUN)
           - freestyle
           - givemeanode
           - gravixlayer
@@ -163,6 +173,38 @@ jobs:
             pnpm install --frozen-lockfile --ignore-scripts
           fi
           pnpm -r --filter './packages/**' run build
+      # --- ec2-firecrab ephemeral host pool ---------------------------------
+      # When a manual dispatch sets host_count > 0, this job launches that many
+      # fresh firecrab hosts from the baked AMI, points the bench at them, and
+      # terminates them under `if: always()`. Launch config + AWS creds come
+      # from the vault; the host scripts come from computesdk/ec2-firecrab.
+      - name: Load firecrab pool credentials
+        if: env.FIRECRAB_POOL == 'true'
+        run: |
+          . benchmarks/scripts/load-vault-secrets.sh '^(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN|AWS_REGION|AWS_DEFAULT_REGION|FIRECRAB_AMI_ID|FIRECRAB_KEY_NAME|FIRECRAB_SG_ID|FIRECRAB_SUBNET_ID|FIRECRAB_INSTANCE_TYPE|FIRECRAB_SSH_USER|EC2_FIRECRAB_SSH_KEY|FIRECRAB_REPO_TOKEN)'
+          for v in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_REGION AWS_DEFAULT_REGION FIRECRAB_AMI_ID FIRECRAB_KEY_NAME FIRECRAB_SG_ID FIRECRAB_SUBNET_ID FIRECRAB_INSTANCE_TYPE FIRECRAB_SSH_USER FIRECRAB_REPO_TOKEN; do
+            if [ -n "${!v:-}" ]; then echo "$v=${!v}" >> "$GITHUB_ENV"; fi
+          done
+          # PEM the pool's SSH readiness probe uses against fresh hosts.
+          printf '%s\n' "$EC2_FIRECRAB_SSH_KEY" > /tmp/firecrab-host.pem
+          chmod 600 /tmp/firecrab-host.pem
+          echo "SSH_KEY_PATH=/tmp/firecrab-host.pem" >> "$GITHUB_ENV"
+          command -v aws >/dev/null || {
+            curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscli.zip
+            unzip -qo /tmp/awscli.zip -d /tmp && sudo /tmp/aws/install --update
+          }
+      - uses: actions/checkout@v4
+        if: env.FIRECRAB_POOL == 'true'
+        with:
+          repository: computesdk/ec2-firecrab
+          path: ec2-firecrab
+          token: ${{ env.FIRECRAB_REPO_TOKEN }}
+      - name: Launch firecrab host pool
+        if: env.FIRECRAB_POOL == 'true'
+        run: |
+          LINE=$(./ec2-firecrab/host/pool-up.sh "${{ github.event.inputs.host_count }}" | tail -1)
+          echo "$LINE"
+          echo "POOL_SSH_TARGETS=${LINE#EC2_FIRECRAB_SSH_TARGETS=}" >> "$GITHUB_ENV"
       - name: Clear stale results from checkout
         if: env.SHOULD_RUN == 'true'
         run: rm -rf results/
@@ -175,6 +217,16 @@ jobs:
           if [ "${{ github.event_name }}" = "schedule" ]; then
             unset OPENCOMPUTER_API_KEY OPENCOMPUTER_API_URL
           fi
+
+          # EC2_FIRECRAB_* is loaded per-leg, not in the shared regex: the SSH
+          # private key must not reach other providers' env, where every
+          # provider package runs in-process.
+          if [ "${{ matrix.provider }}" = "ec2-firecrab" ]; then
+            . benchmarks/scripts/load-vault-secrets.sh '^(EC2_FIRECRAB_[A-Z_]+)'
+          fi
+
+          # A freshly launched pool overrides the vault's standing target list.
+          export EC2_FIRECRAB_SSH_TARGETS="${POOL_SSH_TARGETS:-${EC2_FIRECRAB_SSH_TARGETS:-}}"
 
           # Burst shape only; every provider passes the same --run-key, so they
           # get-or-create one shared run and rank against each other (each
@@ -189,6 +241,14 @@ jobs:
             --run-key "$RUN_KEY" \
             --concurrency ${{ github.event.inputs.concurrency || (github.event_name == 'push' && '10') || '100' }} \
             ${{ (github.event_name == 'push' || github.event.inputs.dry_run == 'true') && '--no-ingest' || '' }}
+      - name: Terminate firecrab host pool
+        if: always() && env.FIRECRAB_POOL == 'true'
+        run: |
+          if [ -f ec2-firecrab/host/.firecrab-pool.env ]; then
+            ./ec2-firecrab/host/pool-down.sh
+          else
+            echo "no pool state — nothing to terminate"
+          fi
       - name: Upload results
         if: always() && env.SHOULD_RUN == 'true'
         uses: actions/upload-artifact@v4
